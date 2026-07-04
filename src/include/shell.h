@@ -18,6 +18,7 @@ typedef enum shell_return_t
 } shell_return_t;
 char **SHL_BuildArgs(int total_strings, char *buf);
 int SHL_BuildPath(char *buf, char *PATH);
+int SHL_Read(char *buf);
 int SHL_Shell();
 
 #endif

@@ -53,20 +53,30 @@ int SHL_Execute(char *PATH, char **args)
     }
     return status;
 }
+
+int SHL_Read(char *buf)
+{
+    int w = 0, r = 0;
+    if ((w = write(1, shell, 7)) < 0) // Writing shell symbol
+        return SHELL_INPUT_ERROR;
+
+    if ((r = read(0, buf, sizeof(buf))) < 0) // Reading user input
+        return SHELL_INPUT_ERROR;
+
+    if (STR_Tokanize(buf, r) < 0) // Tokanizing Input
+        return SHELL_INPUT_ERROR;
+
+    return r;
+}
 int SHL_Shell()
 {
     while (1)
     {
         char buf[1024], PATH[1024];
-        int r = 0, w = 0;
+        int r = 0;
 
-        if ((w = write(1, shell, 7)) < 0) // Writing shell symbol
+        if ((r = SHL_Read(buf)) < 0)
             continue;
-        if ((r = read(0, buf, sizeof(buf))) < 0) // Reading user input
-            continue;
-
-        if (STR_Tokanize(buf, r) < 0) // Tokanizing Input
-            return SHELL_INPUT_ERROR;
 
         // Will build the path
         SHL_BuildPath(buf, PATH);
@@ -76,6 +86,7 @@ int SHL_Shell()
             continue;
 
         int total_strings = STR_Count(buf, r);
+
         char **args = SHL_BuildArgs(total_strings, buf);
 
         int status = SHL_Execute(PATH, args);
