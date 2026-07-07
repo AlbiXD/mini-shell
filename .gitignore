@@ -1,4 +1,4 @@
-shell
+/shell
 build
 build/*
 *.txt
