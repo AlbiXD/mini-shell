@@ -4,6 +4,7 @@
 int FILE_Check(char const *path)
 {
     int fd = open(path, O_RDONLY);
+    
     if (fd == -1)
     {
         if (errno == ENOENT)

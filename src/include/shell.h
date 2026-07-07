@@ -9,16 +9,24 @@
 #include "file.h"
 
 extern const char *shell;
-extern const char *path;
+extern const char *bin;
 
 typedef enum shell_return_t
 {
     SHELL_INPUT_ERROR = -1,
     SHELL_FILE_ERROR = -2
 } shell_return_t;
-char **SHL_BuildArgs(int total_strings, char *buf);
+
+typedef enum shell_cmd_t
+{
+    SHELL_CMD_PATH = 0,
+    SHELL_CMD_SEARCH = 2,
+    SHELL_CMD_INTERNAL = 3
+} shell_cmd_t;
+char **SHL_BuildArgs(char *buf, int size);
 int SHL_BuildPath(char *buf, char *PATH);
 int SHL_Read(char *buf);
+int SHL_Execute(char *path, char **args);
 int SHL_Shell();
 
 #endif
